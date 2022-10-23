@@ -16,13 +16,18 @@ import org.pcap4j.util.NifSelector;
 
 //Clase principal del programa
 public class PcapSniffer {
-    
-    static String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()); //objeto time para usar posteriormente en nombre fichero pcap
-    
-    //Constructor de tipo PcapNetworkInterface
+
+    static String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()); // objeto time para
+                                                                                                   // usar
+                                                                                                   // posteriormente en
+                                                                                                   // nombre fichero
+                                                                                                   // pcap
+
+    // Constructor de tipo PcapNetworkInterface
     static PcapNetworkInterface getNetworkDevice() {
         PcapNetworkInterface nif = null;
-        //Crea el objeto nif con valor nullpara la seleccion de interfaz dentro de un try-catch
+        // Crea el objeto nif con valor nullpara la seleccion de interfaz dentro de un
+        // try-catch
         try {
             nif = new NifSelector().selectNetworkInterface();
         } catch (IOException e) {
@@ -31,9 +36,10 @@ public class PcapSniffer {
         return nif;
     }
 
-    //Metodo main
+    // Metodo main
     public static void main(String[] args) throws PcapNativeException, NotOpenException {
-        //Crea objeto nif usando constructor PcapNetworkInterface y lo inicializa con valor del getter
+        // Crea objeto nif usando constructor PcapNetworkInterface y lo inicializa con
+        // valor del getter
         PcapNetworkInterface nif = getNetworkDevice();
         System.out.println("You chose: " + nif);
 
@@ -44,12 +50,12 @@ public class PcapSniffer {
         }
 
         // Pcap handle, bloque para capturar los paquetes
-        
-        int snapLen = 65536; //tamaño de trama en bytes
-        PromiscuousMode mode = PromiscuousMode.PROMISCUOUS; //modo promiscuo de la intefaz
-        int timeout = 10; //tiempo en milisegundos para leer paquetes
-        PcapHandle handle = nif.openLive(snapLen, mode, timeout); //objeto tipo handle para capturar paquetes con metodo openLive
-        PcapDumper dumper = handle.dumpOpen(time+".pcap"); //objeto tipo dumper para guardar los paquetes capturados
+        int snapLen = 65536; // tamaño de trama en bytes
+        PromiscuousMode mode = PromiscuousMode.PROMISCUOUS; // modo promiscuo de la intefaz
+        int timeout = 10; // tiempo en milisegundos para leer paquetes
+        PcapHandle handle = nif.openLive(snapLen, mode, timeout); // objeto tipo handle para capturar paquetes con
+                                                                  // metodo openLive
+        PcapDumper dumper = handle.dumpOpen(time + ".pcap"); // objeto tipo dumper para guardar los paquetes capturados
 
         // Filtro para las cabeceras de los paquetes (ver wireshark)
         // String filter = "tcp port 80";
@@ -73,7 +79,8 @@ public class PcapSniffer {
 
         };
 
-        // Loop usando el listener, le indicamos la cantidad de paquetes que debe recibir
+        // Loop usando el listener, le indicamos la cantidad de paquetes que debe
+        // recibir
         try {
             int maxPackets = 50;
             handle.loop(maxPackets, listener);
@@ -81,7 +88,8 @@ public class PcapSniffer {
             e.printStackTrace();
         }
 
-        // Imprime por pantalla un resumen de los datos de los paquetes, usando un objeto de tipo PcapStat
+        // Imprime por pantalla un resumen de los datos de los paquetes, usando un
+        // objeto de tipo PcapStat
         PcapStat stats = handle.getStats();
         System.out.println("Packets received: " + stats.getNumPacketsReceived());
         System.out.println("Packets dropped: " + stats.getNumPacketsDropped());
