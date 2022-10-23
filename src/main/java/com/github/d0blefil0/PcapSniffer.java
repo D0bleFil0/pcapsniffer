@@ -14,15 +14,11 @@ import org.pcap4j.core.PcapPacket;
 import org.pcap4j.core.PcapStat;
 import org.pcap4j.util.NifSelector;
 
-//Clase principal del programa
+// Clase principal del programa
 public class PcapSniffer {
-
-    static String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()); // objeto time para
-                                                                                                   // usar
-                                                                                                   // posteriormente en
-                                                                                                   // nombre fichero
-                                                                                                   // pcap
-
+    // Objeto time para usar en nombre fichero pcap
+    static String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());                                                                                  // usar
+                                                                                            
     // Constructor de tipo PcapNetworkInterface
     static PcapNetworkInterface getNetworkDevice() {
         PcapNetworkInterface nif = null;
