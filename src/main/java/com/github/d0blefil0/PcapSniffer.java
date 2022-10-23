@@ -2,6 +2,7 @@
 package com.github.d0blefil0;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PacketListener;
 import org.pcap4j.core.PcapDumper;
@@ -13,52 +14,56 @@ import org.pcap4j.core.PcapPacket;
 import org.pcap4j.core.PcapStat;
 import org.pcap4j.util.NifSelector;
 
+//Clase principal del programa
 public class PcapSniffer {
-
+    
+    static String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()); //objeto time para usar posteriormente en nombre fichero pcap
+    
+    //Constructor de tipo PcapNetworkInterface
     static PcapNetworkInterface getNetworkDevice() {
-        PcapNetworkInterface device = null;
+        PcapNetworkInterface nif = null;
+        //Crea el objeto nif con valor nullpara la seleccion de interfaz dentro de un try-catch
         try {
-            device = new NifSelector().selectNetworkInterface();
+            nif = new NifSelector().selectNetworkInterface();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return device;
+        return nif;
     }
 
+    //Metodo main
     public static void main(String[] args) throws PcapNativeException, NotOpenException {
-        // The code we had before
-        PcapNetworkInterface device = getNetworkDevice();
-        System.out.println("You chose: " + device);
+        //Crea objeto nif usando constructor PcapNetworkInterface y lo inicializa con valor del getter
+        PcapNetworkInterface nif = getNetworkDevice();
+        System.out.println("You chose: " + nif);
 
-        // New code below here
-        if (device == null) {
+        // Condicional if para evitar valores nulos en seleccion menu
+        if (nif == null) {
             System.out.println("No device chosen.");
             System.exit(1);
         }
 
-        // Open the device and get a handle
-        int snapshotLength = 65536; // in bytes
-        int readTimeout = 10; // in milliseconds
-        final PcapHandle handle;
-        handle = device.openLive(snapshotLength, PromiscuousMode.PROMISCUOUS, readTimeout);
-        PcapDumper dumper = handle.dumpOpen("out.pcap");
+        // Pcap handle, bloque para capturar los paquetes
+        
+        int snapLen = 65536; //tamaño de trama en bytes
+        PromiscuousMode mode = PromiscuousMode.PROMISCUOUS; //modo promiscuo de la intefaz
+        int timeout = 10; //tiempo en milisegundos para leer paquetes
+        PcapHandle handle = nif.openLive(snapLen, mode, timeout); //objeto tipo handle para capturar paquetes con metodo openLive
+        PcapDumper dumper = handle.dumpOpen(time+".pcap"); //objeto tipo dumper para guardar los paquetes capturados
 
-        // Set a filter to only listen for tcp packets on port 80 (HTTP)
+        // Filtro para las cabeceras de los paquetes (ver wireshark)
         // String filter = "tcp port 80";
         // handle.setFilter(filter, BpfCompileMode.OPTIMIZE);
 
-        // Create a listener that defines what to do with the received packets
+        // Objeto de tipo PacketListener para gestionar los paquetes recibidos
         PacketListener listener = new PacketListener() {
 
-            /**
-             * @param packet
-             */
             public void gotPacket(PcapPacket packet) {
-                // Print packet information to screen
+                // Imprime la informacion de los paquetes
                 System.out.println(handle.getTimestampPrecision());
                 System.out.println(packet);
 
-                // Dump packets to file
+                // Volcado de la informacion de los paquetes al fichero que se guardará
                 try {
                     dumper.dump(packet);
                 } catch (NotOpenException e) {
@@ -68,7 +73,7 @@ public class PcapSniffer {
 
         };
 
-        // Tell the handle to loop using the listener we created
+        // Loop usando el listener, le indicamos la cantidad de paquetes que debe recibir
         try {
             int maxPackets = 50;
             handle.loop(maxPackets, listener);
@@ -76,14 +81,14 @@ public class PcapSniffer {
             e.printStackTrace();
         }
 
-        // Print out handle statistics
+        // Imprime por pantalla un resumen de los datos de los paquetes, usando un objeto de tipo PcapStat
         PcapStat stats = handle.getStats();
         System.out.println("Packets received: " + stats.getNumPacketsReceived());
         System.out.println("Packets dropped: " + stats.getNumPacketsDropped());
         System.out.println("Packets dropped by interface: " + stats.getNumPacketsDroppedByIf());
         System.out.println("Packets captured: " + stats.getNumPacketsCaptured());
 
-        // Cleanup when complete
+        // Metodo close para los objetos dumper y handle
         dumper.close();
         handle.close();
     }
