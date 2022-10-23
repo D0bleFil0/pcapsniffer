@@ -2,7 +2,6 @@
 package com.github.d0blefil0;
 
 import java.io.IOException;
-
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PacketListener;
 import org.pcap4j.core.PcapDumper;
@@ -39,7 +38,7 @@ public class PcapSniffer {
 
         // Open the device and get a handle
         int snapshotLength = 65536; // in bytes
-        int readTimeout = 50; // in milliseconds
+        int readTimeout = 10; // in milliseconds
         final PcapHandle handle;
         handle = device.openLive(snapshotLength, PromiscuousMode.PROMISCUOUS, readTimeout);
         PcapDumper dumper = handle.dumpOpen("out.pcap");
@@ -82,6 +81,7 @@ public class PcapSniffer {
         System.out.println("Packets received: " + stats.getNumPacketsReceived());
         System.out.println("Packets dropped: " + stats.getNumPacketsDropped());
         System.out.println("Packets dropped by interface: " + stats.getNumPacketsDroppedByIf());
+        System.out.println("Packets captured: " + stats.getNumPacketsCaptured());
 
         // Cleanup when complete
         dumper.close();
