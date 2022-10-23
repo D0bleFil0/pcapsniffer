@@ -3,10 +3,16 @@ package com.github.d0blefil0;
 
 import java.io.IOException;
 
-import org.pcap4j.core.*;
+import org.pcap4j.core.NotOpenException;
+import org.pcap4j.core.PacketListener;
+import org.pcap4j.core.PcapDumper;
+import org.pcap4j.core.PcapHandle;
+import org.pcap4j.core.PcapNativeException;
+import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
-import org.pcap4j.packet.*;
-import org.pcap4j.util.*;
+import org.pcap4j.core.PcapPacket;
+import org.pcap4j.core.PcapStat;
+import org.pcap4j.util.NifSelector;
 
 public class PcapSniffer {
 
