@@ -17,7 +17,7 @@ import org.pcap4j.util.NifSelector;
 // Clase principal del programa
 public class PcapSniffer {
     // Objeto time para usar en nombre fichero pcap
-    static String time = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());                                                                                  // usar
+    static String time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());                                                                                  // usar
                                                                                             
     // Constructor de tipo PcapNetworkInterface
     static PcapNetworkInterface getNetworkDevice() {
@@ -72,7 +72,6 @@ public class PcapSniffer {
                     e.printStackTrace();
                 }
             }
-
         };
 
         // Loop usando el listener, le indicamos la cantidad de paquetes que debe
