@@ -50,9 +50,10 @@ public class PcapSniffer {
         int snapLen = 65536; // tamaño de trama en bytes
         PromiscuousMode mode = PromiscuousMode.PROMISCUOUS; // modo promiscuo de la intefaz
         int timeout = 10; // tiempo en milisegundos para leer paquetes
-        PcapHandle handle = nif.openLive(snapLen, mode, timeout); // objeto tipo handle para capturar paquetes con
-                                                                  // metodo openLive
-        PcapDumper dumper = handle.dumpOpen(time + ".pcap"); // objeto tipo dumper para guardar los paquetes capturados
+        // objeto tipo handle para capturar paquetes con metodo openLive
+        PcapHandle handle = nif.openLive(snapLen, mode, timeout);
+        // objeto tipo dumper para guardar paquetes en fichero pcap
+        PcapDumper dumper = handle.dumpOpen(time + ".pcap"); 
 
         // Filtro para las cabeceras de los paquetes (ver wireshark)
         //String filter = "tcp port 443";
@@ -75,8 +76,7 @@ public class PcapSniffer {
             }
         };
 
-        // Loop usando el listener, le indicamos la cantidad de paquetes que debe
-        // recibir
+        // Loop usando el listener, le indicamos la cantidad de paquetes que debe capturar
         try {
             int maxPackets = 50;
             handle.loop(maxPackets, listener);
@@ -84,8 +84,7 @@ public class PcapSniffer {
             e.printStackTrace();
         }
 
-        // Imprime por pantalla un resumen de los datos de los paquetes, usando un
-        // objeto de tipo PcapStat
+        // Imprime por pantalla un resumen de los datos de los paquetes, usando un objeto de tipo PcapStat
         PcapStat stats = handle.getStats();
         System.out.println("Packets received: " + stats.getNumPacketsReceived());
         System.out.println("Packets dropped: " + stats.getNumPacketsDropped());
