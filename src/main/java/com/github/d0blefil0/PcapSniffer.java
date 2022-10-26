@@ -55,8 +55,8 @@ public class PcapSniffer {
         PcapDumper dumper = handle.dumpOpen(time + ".pcap"); // objeto tipo dumper para guardar los paquetes capturados
 
         // Filtro para las cabeceras de los paquetes (ver wireshark)
-         String filter = "tcp port 443";
-        handle.setFilter(filter, BpfCompileMode.OPTIMIZE);
+        //String filter = "tcp port 443";
+        //handle.setFilter(filter, BpfCompileMode.OPTIMIZE);
 
         // Objeto de tipo PacketListener para gestionar los paquetes recibidos
         PacketListener listener = new PacketListener() {
