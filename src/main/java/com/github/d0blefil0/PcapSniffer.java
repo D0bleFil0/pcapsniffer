@@ -12,6 +12,7 @@ import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.core.PcapPacket;
 import org.pcap4j.core.PcapStat;
+import org.pcap4j.core.BpfProgram.BpfCompileMode;
 import org.pcap4j.util.NifSelector;
 
 // Clase principal del programa
@@ -19,11 +20,11 @@ public class PcapSniffer {
     // Objeto time para usar en nombre fichero pcap
     static String time = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new java.util.Date());                                                                                  // usar
                                                                                             
-    // Constructor de tipo PcapNetworkInterface
+    // Getter para mostrar el dispositivo de red a usar
     static PcapNetworkInterface getNetworkDevice() {
         PcapNetworkInterface nif = null;
         // Crea el objeto nif con valor nullpara la seleccion de interfaz dentro de un
-        // try-catch
+        // try-catch para capturar la excepcion
         try {
             nif = new NifSelector().selectNetworkInterface();
         } catch (IOException e) {
@@ -54,8 +55,8 @@ public class PcapSniffer {
         PcapDumper dumper = handle.dumpOpen(time + ".pcap"); // objeto tipo dumper para guardar los paquetes capturados
 
         // Filtro para las cabeceras de los paquetes (ver wireshark)
-        // String filter = "tcp port 80";
-        // handle.setFilter(filter, BpfCompileMode.OPTIMIZE);
+         String filter = "tcp port 443";
+        handle.setFilter(filter, BpfCompileMode.OPTIMIZE);
 
         // Objeto de tipo PacketListener para gestionar los paquetes recibidos
         PacketListener listener = new PacketListener() {
