@@ -52,7 +52,7 @@ mvn clean package
 To use the app, you need to have installed Java 8 or higher. Then, you can run the app with the following command:
 
 ```bash
-sudo java -jar uber-pcapsniffer-1.0-SNAPSHOT.jar
+sudo java -jar test-pcapsniffer-0.1-SNAPSHOT.jar
 ```
 
 You might need to run the app as root, because it needs to access the network interface.

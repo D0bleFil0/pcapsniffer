@@ -4,7 +4,7 @@
   <groupId>com.github.d0blefil0</groupId>
   <artifactId>PcapSniffer</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0</version>
+  <version>0.1.0</version>
   <name>pcap</name>
   <url>http://maven.apache.org</url>
   <dependencies>
