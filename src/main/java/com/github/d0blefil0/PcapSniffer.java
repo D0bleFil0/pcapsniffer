@@ -12,7 +12,6 @@ import org.pcap4j.core.PcapNetworkInterface;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.core.PcapPacket;
 import org.pcap4j.core.PcapStat;
-import org.pcap4j.core.BpfProgram.BpfCompileMode;
 import org.pcap4j.util.NifSelector;
 
 // Clase principal del programa
