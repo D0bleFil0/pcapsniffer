@@ -41,7 +41,7 @@ Check the [PCAP4J documentation](https://www.pcap4j.org/) for more information.
 
 ## How to build
 
-To build the project, you need to have installed Java 8 or higher. Then, you can build the project with the following command:
+To build the project, you need to have installed Java 8 or higher, and Maven. Then, you can build the project with the following command:
 
 ```bash
 mvn clean
