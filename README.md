@@ -44,7 +44,9 @@ Check the [PCAP4J documentation](https://www.pcap4j.org/) for more information.
 To build the project, you need to have installed Java 8 or higher. Then, you can build the project with the following command:
 
 ```bash
-mvn clean package
+mvn clean
+mvn compile
+mvn package -f pom.xml
 ```
 
 ### PcapSniffer
